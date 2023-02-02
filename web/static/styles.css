@@ -1,0 +1,23 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-display {
+    display: block;
+    border: 2px solid black;
+    width: 700px;
+    min-height: 500px;
+}
+
+.chat-input {
+    display: block;
+    width: 700px;
+    height: 100px;
+}
+
+.submit-button {
+    display: block;
+}
