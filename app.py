@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request
+from flask import Flask, request, current_app
 from flask_sock import Sock
 from slack_bolt.adapter.flask import SlackRequestHandler
 from slack_bolt import App
@@ -15,7 +15,7 @@ app = App(
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
-flask_app = Flask(__name__)
+flask_app = Flask(__name__, static_url_path="")
 sock = Sock(flask_app)
 handler = SlackRequestHandler(app)
 
@@ -35,6 +35,11 @@ def respond_to_message(client, event, logger):
                 active_clients.remove(client)
         for client in active_clients:
             client.send(message_text)
+
+
+@flask_app.route("/", methods=["GET"])
+def serve_page():
+    return current_app.send_static_file('index.html')
 
 
 @flask_app.route("/slack/events", methods=["POST"])
