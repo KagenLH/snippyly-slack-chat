@@ -52,4 +52,4 @@ def listen_on_websocket(ws):
 
 
 if __name__ == "__main__":
-    flask_app.run(PORT)
+    flask_app.run(port=PORT)
