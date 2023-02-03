@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const webSocket = new WebSocket("ws://localhost:8000/websocket");
+    const webSocket = new WebSocket("ws://localhost:3000/websocket");
     const chatDisplay = document.getElementById("chat-display")
     const submitButton = document.getElementById("submit-button")
     const chatInput = document.getElementById("chat-input")
@@ -16,12 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatInput.value = "";
     });
 
-    webSocket.onopen = (event) => {
-        webSocket.send("Let's send an introductory message...");
-    }
-
     webSocket.onmessage = (event) => {
         addMessageToChat(`Slack: ${event.data}`);
-        console.log(event.data);
     }
 });
