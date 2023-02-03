@@ -29,6 +29,8 @@ message_timestamps = set()
 def respond_to_message(client, event, logger):
     message_text = event.get("text")
     thread_ts = event.get("thread_ts", None)
+    app.logger("The message handler is being executed...")
+    app.logger(f"Current state of active_clients: {active_clients}")
     if thread_ts is not None and thread_ts in message_timestamps:
         for client in active_clients:
             if not client.connected:
