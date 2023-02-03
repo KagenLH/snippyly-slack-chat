@@ -1,13 +1,17 @@
+import asyncio
 import os
 
-import requests
+import websockets
+
 
 class SnippylyAdapter:
-    SNIPPYLY_API_URL = os.environ.get("SNIPPYLY_API_URL")
+    @staticmethod
+    async def send_message(websocket):
+        async for message in websocket:
+            print(message)
+            await websocket.send("Replying to your message...")
     
     @staticmethod
-    def send_message(self, message):
-        try:
-            requests.post(self.SNIPPYLY_API_URL, data=message)
-        except requests.RequestException as e:
-            print(f"Something went wrong with the request to the Snippyly API... exception message: {e}")
+    async def start_server():
+        async with websockets.serve(SnippylyAdapter.send_message, "localhost", os.environ.get("PORT", 3000)):
+            await asyncio.Future()
