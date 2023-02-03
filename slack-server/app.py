@@ -5,6 +5,11 @@ from flask_sock import Sock
 from slack_bolt.adapter.flask import SlackRequestHandler
 from slack_bolt import App
 
+SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
+SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET")
+SLACK_CHANNEL_ID = os.environ.get("SLACK_CHANNEL_ID")
+PORT = os.environ.get("PORT", 3000)
+
 app = App(
     token=os.environ.get("SLACK_BOT_TOKEN"),
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
@@ -38,13 +43,13 @@ def slack_events():
 
 
 @sock.route('/websocket')
-def echo_socket(ws):
+def listen_on_websocket(ws):
     active_clients.add(ws)
     while True:
         message = ws.receive()
-        res = app.client.chat_postMessage(channel="C04MXM00DQU", text=message)
+        res = app.client.chat_postMessage(channel=SLACK_CHANNEL_ID, text=message)
         message_timestamps.add(res.get("ts"))
 
 
 if __name__ == "__main__":
-    flask_app.run(port=3000)
+    flask_app.run(PORT)
