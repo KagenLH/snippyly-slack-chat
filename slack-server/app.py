@@ -1,23 +1,21 @@
-import asyncio
 import os
+import json
 
+import requests
 from slack_bolt import App
-from snippyly_adapter import SnippylyAdapter
 
-# app = App(
-#     token=os.environ.get("SLACK_BOT_TOKEN"),
-#     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
-# )
+app = App(
+    token=os.environ.get("SLACK_BOT_TOKEN"),
+    signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
+)
 
-# @app.event("message.channels")
-# def respond_to_message(client, event, logger):
-#     message = {
-#         "messageText": event.text
-#     }
-#     SnippylyAdapter.send_message(message)
+messages = []
 
+@app.event("message")
+def respond_to_message(client, event, logger):
+    message_text = event.get("text")
+    data=json.dumps({"msg": message_text})
+    requests.post("http://localhost:8000/send-message", data=data, headers={"Content-Type": "application/json"})
 
 if __name__ == "__main__":
-    # app.start(port=int(os.environ.get("PORT", 3000)))
-    asyncio.run(SnippylyAdapter.start_server())
-    
+    app.start(port=3000)
