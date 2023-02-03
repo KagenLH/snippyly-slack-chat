@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const webSocket = new WebSocket("https://snippyly-slack.onrender.com/websocket");
+    const webSocket = new WebSocket("ws://snippyly-slack.onrender.com/websocket");
     const chatDisplay = document.getElementById("chat-display")
     const submitButton = document.getElementById("submit-button")
     const chatInput = document.getElementById("chat-input")
