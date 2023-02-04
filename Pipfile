@@ -8,6 +8,7 @@ slack-bolt = "*"
 flask = "*"
 flask-sock = "*"
 gunicorn = "*"
+gevent = "*"
 
 [dev-packages]
 
