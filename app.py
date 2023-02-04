@@ -34,9 +34,7 @@ def respond_to_message(client, event, logger):
     app.logger.info(f"thread_ts: {thread_ts}")
     app.logger.info(f"message_timestamps: {message_timestamps}")
     if thread_ts is not None and thread_ts in message_timestamps:
-        for client in active_clients:
-            if not client.connected:
-                active_clients.remove(client)
+        active_clients = {client for client in active_clients if client.connected}
         for client in active_clients:
             client.send(message_text)
 
