@@ -29,8 +29,10 @@ message_timestamps = set()
 def respond_to_message(client, event, logger):
     message_text = event.get("text")
     thread_ts = event.get("thread_ts", None)
-    app.logger("The message handler is being executed...")
-    app.logger(f"Current state of active_clients: {active_clients}")
+    app.logger.info("The message handler is being executed...")
+    app.logger.info(f"Current state of active_clients: {active_clients}")
+    app.logger.info(f"thread_ts: {thread_ts}")
+    app.logger.info(f"message_timestamps: {message_timestamps}")
     if thread_ts is not None and thread_ts in message_timestamps:
         for client in active_clients:
             if not client.connected:
@@ -55,7 +57,10 @@ def listen_on_websocket(ws):
     while True:
         message = ws.receive()
         res = app.client.chat_postMessage(channel=SLACK_CHANNEL_ID, text=message)
+        ts = res.get("ts")
+        app.logger.info(f"Adding timestamp: {ts} to message_timestamps.")
         message_timestamps.add(res.get("ts"))
+        app.logger.info(f"Timestamp added, new state of message_timestamps: {message_timestamps}")
 
 
 if __name__ == "__main__":
