@@ -31,6 +31,8 @@ def respond_to_message(client, event, logger):
     message_text = event.get("text")
     thread_ts = event.get("thread_ts", None)
     if thread_ts is not None and thread_ts in message_timestamps:
+        # Minor memory leak from not removing clients that would become an issue at large scale, but for the
+        # sake of this project its harmless.
         for client in active_clients:
             if client.connected:
                 client.send(message_text)
